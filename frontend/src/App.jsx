@@ -4,16 +4,19 @@ import { ToastContainer, toast } from "react-toastify";
 import apiInstance from "./apiInstance";
 
 const App = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const handleForm = async (e) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const response = await apiInstance.post("/auth/register", {
-      name,
-      email,
-      password,
-    });
+    const response = await apiInstance.post("/auth/register", formData);
     if (response.data.success) {
       toast.success(response.data.message, { position: "top-center" });
     } else {
@@ -27,30 +30,30 @@ const App = () => {
         Registration Form
       </h2>
       <div className="border border-gray-500 p-10 rounded-lg">
-        <form className="flex flex-col gap-3" onSubmit={handleForm}>
+        <form className="flex flex-col gap-3" onSubmit={handleFormSubmit}>
           <input
-            className="border border-gray-600 text-white px-8 py-2 rounded-lg text-2xl"
+            className="border border-gray-600 text-white px-8 py-2 rounded-lg text-lg"
             type="text"
             name="name"
             placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={formData.name}
+            onChange={(e) => handleChange(e)}
           />
           <input
-            className="border border-gray-600 text-white px-8 py-2 rounded-lg text-2xl"
+            className="border border-gray-600 text-white px-8 py-2 rounded-lg text-lg"
             type="email"
             name="email"
             placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={(e) => handleChange(e)}
           />
           <input
-            className="border border-gray-600 text-white px-8 py-2 rounded-lg text-2xl"
+            className="border border-gray-600 text-white px-8 py-2 rounded-lg text-lg"
             type="password"
             name="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={(e) => handleChange(e)}
           />
           <button className="px-5 py-2 bg-blue-500 text-xl text-white font-semibold w-30 mx-auto rounded-lg mt-6 cursor-pointer">
             Submit
