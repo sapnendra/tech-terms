@@ -29,7 +29,7 @@ export const registerUser = async (req, res) => {
       return res.json({ message: "User already exists", success: false });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ name, email, password: hashedPassword });
+    await User.create({ name, email, password: hashedPassword });
     return res.json({ message: "User registered successfully", success: true });
   } catch (error) {
     console.log(error.message);
@@ -59,7 +59,17 @@ export const loginUser = async (req, res) => {
       return res.json({ message: "Invalid credentials", success: false });
     }
 
-    generateToken(res, { id: user._id, role: user.isAdmin ? "admin" : "user" });
+    const token = generateToken(res, {
+      id: user._id,
+      role: user.isAdmin ? "admin" : "user",
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
 
     res.json({
       message: "User logged in successfully",
@@ -85,12 +95,20 @@ export const adminLogin = async (req, res) => {
         success: false,
       });
     }
+
     const adminEmail = process.env.ADMIN_EMAIL;
     const adminPassword = process.env.ADMIN_PASSWORD;
 
     if (email !== adminEmail || password !== adminPassword) {
       return res.json({ message: "Invalid credentials", success: false });
     }
+
+    const user = await User.findOne({ email });
+
+    const token = generateToken(res, {
+      id: user._id,
+      role: user.isAdmin ? "admin" : "user",
+    });
 
     res.cookie("token", token, {
       httpOnly: true,
