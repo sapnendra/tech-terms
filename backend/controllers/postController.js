@@ -4,7 +4,6 @@ import Post from "../models/postModel.js";
 export const createPost = async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log(userId);
 
     const { title, content } = req.body;
     if (!title || !content) {
