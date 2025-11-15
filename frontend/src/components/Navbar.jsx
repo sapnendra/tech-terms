@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import apiInstance from "../apiInstance";
+import { toast } from "react-toastify";
 
 const links = [
   { label: "Home", to: "/" },
@@ -9,6 +11,46 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  const checkAuth = async () => {
+    try {
+      const response = await apiInstance.get("/auth/is-auth");
+      if (response.data.success) {
+        setIsAuthenticated(true);
+        setUser(response.data.user);
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
+      }
+    } catch (error) {
+      setIsAuthenticated(false);
+      setUser(null);
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+    const handleAuthChange = () => checkAuth();
+    window.addEventListener("auth-change", handleAuthChange);
+    return () => window.removeEventListener("auth-change", handleAuthChange);
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await apiInstance.post("/auth/logout");
+      setIsAuthenticated(false);
+      setUser(null);
+      window.dispatchEvent(new Event("auth-change"));
+      toast.success("Logged out successfully");
+      navigate("/");
+    } catch (error) {
+      toast.error("Failed to logout");
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/80 backdrop-blur supports-backdrop-blur:bg-slate-950/70">
@@ -17,7 +59,7 @@ export default function Navbar() {
           to="/"
           className="text-3xl font-black uppercase tracking-tight text-white"
         >
-          Tech-Terms
+          <span className="text-indigo-500">Tech-Terms</span> <span className="text-slate-600 text-lg">by Sapnendra</span>
         </Link>
 
         <button
@@ -64,18 +106,72 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link
-            to="/login"
-            className="rounded-2xl border border-indigo-500/70 px-6 py-2 text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-500/10"
-          >
-            Login
-          </Link>
-          <Link
-            to="/register"
-            className="rounded-2xl bg-indigo-500 px-6 py-2 text-white shadow-lg shadow-indigo-500/40 transition hover:bg-indigo-400"
-          >
-            Sign Up
-          </Link>
+          {isAuthenticated ? (
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setProfileOpen(!profileOpen)}
+                className="flex items-center gap-3 rounded-2xl border border-slate-700 bg-slate-900/50 p-2 transition hover:border-indigo-500 hover:bg-slate-800"
+                aria-label="Profile menu"
+                aria-expanded={profileOpen}
+              >
+                <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-indigo-500/50 bg-gradient-to-br from-indigo-400 to-indigo-600">
+                  <div className="flex h-full w-full items-center justify-center text-lg font-bold text-white">
+                    {user?.name?.charAt(0).toUpperCase() || "U"}
+                  </div>
+                </div>
+              </button>
+              {profileOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setProfileOpen(false)}
+                  />
+                  <div className="absolute right-0 top-14 z-50 w-56 rounded-2xl border border-slate-700 bg-slate-900/95 p-2 shadow-2xl backdrop-blur">
+                    <Link
+                      to="/profile"
+                      onClick={() => setProfileOpen(false)}
+                      className="block rounded-xl px-4 py-3 text-base font-medium text-slate-200 transition hover:bg-slate-800 hover:text-white"
+                    >
+                      View Profile
+                    </Link>
+                    <Link
+                      to="/create-post"
+                      onClick={() => setProfileOpen(false)}
+                      className="block rounded-xl px-4 py-3 text-base font-medium text-slate-200 transition hover:bg-slate-800 hover:text-white"
+                    >
+                      Create New Post
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setProfileOpen(false);
+                        handleLogout();
+                      }}
+                      className="mt-2 w-full rounded-xl bg-red-600 px-4 py-3 text-base font-semibold text-white transition hover:bg-red-700"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="rounded-2xl border border-indigo-500/70 px-6 py-2 text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-500/10"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="rounded-2xl bg-indigo-500 px-6 py-2 text-white shadow-lg shadow-indigo-500/40 transition hover:bg-indigo-400"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </nav>
       </div>
 
@@ -93,22 +189,61 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <div className="mt-4 flex flex-col gap-3">
-            <Link
-              to="/login"
-              className="rounded-2xl border border-indigo-500/50 px-4 py-3 text-center text-white transition hover:bg-indigo-500/10"
-              onClick={() => setOpen(false)}
-            >
-              Login
-            </Link>
-            <Link
-              to="/register"
-              className="rounded-2xl bg-indigo-500 px-4 py-3 text-center text-white transition hover:bg-indigo-400"
-              onClick={() => setOpen(false)}
-            >
-              Sign Up
-            </Link>
-          </div>
+          {isAuthenticated ? (
+            <div className="mt-4 space-y-2 border-t border-slate-800 pt-4">
+              <div className="flex items-center gap-3 rounded-2xl border border-slate-700 bg-slate-900/50 px-4 py-3">
+                <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-indigo-500/50 bg-gradient-to-br from-indigo-400 to-indigo-600">
+                  <div className="flex h-full w-full items-center justify-center text-lg font-bold text-white">
+                    {user?.name?.charAt(0).toUpperCase() || "U"}
+                  </div>
+                </div>
+                <span className="text-base font-medium text-slate-200">
+                  {user?.name || "User"}
+                </span>
+              </div>
+              <Link
+                to="/profile"
+                className="block rounded-2xl px-4 py-3 text-center text-white transition hover:bg-slate-900"
+                onClick={() => setOpen(false)}
+              >
+                View Profile
+              </Link>
+              <Link
+                to="/create-post"
+                className="block rounded-2xl px-4 py-3 text-center text-white transition hover:bg-slate-900"
+                onClick={() => setOpen(false)}
+              >
+                Create New Post
+              </Link>
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false);
+                  handleLogout();
+                }}
+                className="w-full rounded-2xl bg-red-600 px-4 py-3 text-center text-white transition hover:bg-red-700"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="mt-4 flex flex-col gap-3">
+              <Link
+                to="/login"
+                className="rounded-2xl border border-indigo-500/50 px-4 py-3 text-center text-white transition hover:bg-indigo-500/10"
+                onClick={() => setOpen(false)}
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="rounded-2xl bg-indigo-500 px-4 py-3 text-center text-white transition hover:bg-indigo-400"
+                onClick={() => setOpen(false)}
+              >
+                Sign Up
+              </Link>
+            </div>
+          )}
         </nav>
       </div>
     </header>

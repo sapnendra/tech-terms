@@ -5,10 +5,11 @@ import bcrypt from "bcryptjs";
 // Generate JWT
 const generateToken = (res, payload) => {
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "3d" });
+  const isProduction = process.env.NODE_ENV === "production";
   res.cookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
     maxAge: 24 * 60 * 60 * 1000,
   });
   return token;
@@ -59,16 +60,9 @@ export const loginUser = async (req, res) => {
       return res.json({ message: "Invalid credentials", success: false });
     }
 
-    const token = generateToken(res, {
+    generateToken(res, {
       id: user._id,
       role: user.isAdmin ? "admin" : "user",
-    });
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.json({
@@ -105,16 +99,9 @@ export const adminLogin = async (req, res) => {
 
     const user = await User.findOne({ email });
 
-    const token = generateToken(res, {
+    generateToken(res, {
       id: user._id,
       role: user.isAdmin ? "admin" : "user",
-    });
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000,
     });
 
     return res.json({
@@ -133,7 +120,12 @@ export const adminLogin = async (req, res) => {
 // Logout
 export const logoutUser = async (req, res) => {
   try {
-    res.clearCookie("token");
+    const isProduction = process.env.NODE_ENV === "production";
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+    });
     return res.json({ message: "User logged out successfully", success: true });
   } catch (error) {
     console.log(error.message);

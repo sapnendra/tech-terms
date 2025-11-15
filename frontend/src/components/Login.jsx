@@ -27,6 +27,7 @@ const Login = ({ setFlag }) => {
       const response = await apiInstance.post("/auth/login", formData);
       if (response.data.success) {
         toast.success(response.data.message);
+        window.dispatchEvent(new Event("auth-change"));
         navigate("/");
       } else {
         toast.error(response.data.message);
@@ -35,6 +36,7 @@ const Login = ({ setFlag }) => {
       const response = await apiInstance.post("/auth/admin/login", formData);
       if (response.data.success) {
         toast.success(response.data.message);
+        window.dispatchEvent(new Event("auth-change"));
         navigate("/admin/dashboard");
       } else {
         toast.error(response.data.message);
@@ -48,8 +50,8 @@ const Login = ({ setFlag }) => {
   };
 
   return (
-    <section className="min-h-screen w-full bg-slate-900 px-4 py-16 text-white">
-      <div className="mx-auto grid max-w-6xl gap-12 rounded-3xl border border-slate-800 bg-slate-900/70 p-8 shadow-2xl shadow-slate-900/40 sm:p-12 lg:grid-cols-2">
+    <section className="w-full px-4 py-16 text-white">
+      <div className="mx-auto grid max-w-6xl gap-12 rounded-3xl border border-slate-700 p-8 shadow-2xl shadow-slate-900/40 sm:p-12 lg:grid-cols-2">
         <div className="space-y-6">
           <p className="inline-flex items-center rounded-full border border-indigo-500/30 px-4 py-1 text-sm font-semibold uppercase tracking-widest text-indigo-300">
             Tech-Terms Portal

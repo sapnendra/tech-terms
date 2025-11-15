@@ -6,14 +6,18 @@ import {
   deletePost,
   editPost,
   likeUnlike,
+  getUserPosts,
+  getPostById,
 } from "../controllers/postController.js";
 
 const postRoutes = express.Router();
 
 postRoutes.post("/newpost", protect, createPost);
 postRoutes.put("/edit/:id", protect, editPost);
-postRoutes.delete("/delete/:id", adminOnly, deletePost);
-postRoutes.get("/like/:userId", protect, likeUnlike);
+postRoutes.delete("/delete/:id", protect, deletePost);
+postRoutes.get("/like/:_id", protect, likeUnlike);
 postRoutes.get("/all", getAllPost);
+postRoutes.get("/user-posts", protect, getUserPosts);
+postRoutes.get("/:id", getPostById);
 
 export default postRoutes;

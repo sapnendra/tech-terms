@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import apiInstance from "../apiInstance";
 import { Link, useNavigate } from "react-router-dom";
-import { toast,ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -20,9 +20,9 @@ const Register = () => {
     e.preventDefault();
     const response = await apiInstance.post("/auth/register", formData);
     if (response.data.success) {
-      toast.success(response.data.message, { position: "top-center" });
+      toast.success(response.data.message);
     } else {
-      toast.error(response.data.message, { position: "top-center" });
+      toast.error(response.data.message);
     }
     setFormData({
       name: "",
@@ -33,8 +33,8 @@ const Register = () => {
   };
 
   return (
-    <section className="min-h-screen w-full bg-slate-950 px-4 py-16 text-white">
-      <div className="mx-auto grid max-w-6xl gap-12 rounded-3xl border border-slate-900 bg-slate-900/80 p-8 shadow-2xl shadow-slate-900/70 sm:p-12 lg:grid-cols-2">
+    <section className="w-full bg-slate-950 px-4 py-16 text-white">
+      <div className="mx-auto grid max-w-6xl gap-12 rounded-3xl border border-slate-700 p-8 shadow-2xl shadow-slate-900/70 sm:p-12 lg:grid-cols-2">
         <div className="space-y-6">
           <p className="inline-flex items-center rounded-full border border-indigo-500/40 px-4 py-1 text-sm font-semibold uppercase tracking-widest text-indigo-300">
             Join Tech-Terms
@@ -143,7 +143,6 @@ const Register = () => {
           </form>
         </div>
       </div>
-      <ToastContainer />
     </section>
   );
 };

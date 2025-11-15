@@ -6,9 +6,11 @@ import Contact from "./pages/Contact";
 import Edit from "./pages/Edit";
 import AuthSystem from "./pages/AuthSystem";
 import Navbar from "./components/Navbar";
+import CreatePost from "./components/CreatePost";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Profile from "./pages/Profile";
 
 const App = () => {
   return (
@@ -21,12 +23,13 @@ const App = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/create-post" element={<CreatePost />} />
           <Route path="/edit/:id" element={<Edit />} />
-          <Route path="/profile" element={<Edit />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/auth-system" element={<AuthSystem />} />
         </Routes>
       </main>
-      <ToastContainer position="top-center" theme="dark" />
+      <ToastContainer position="bottom-right" theme="dark" />
     </div>
   );
 };
