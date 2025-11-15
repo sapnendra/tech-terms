@@ -13,9 +13,9 @@ export const createPost = async (req, res) => {
         success: false,
       });
     }
-    if (content.length < 30) {
+    if (content.length < 100) {
       return res.status(400).json({
-        message: "Content must be at least 30 characters long",
+        message: "Content must be at least 100 characters long",
         success: false,
       });
     }

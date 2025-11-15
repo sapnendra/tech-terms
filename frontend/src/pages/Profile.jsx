@@ -103,8 +103,11 @@ const Profile = () => {
               Your Profile
             </p>
             <h1 className="text-4xl font-bold text-white sm:text-5xl">
-              Welcome back, {user?.name || "User"}
+              Welcome back, <span className="text-indigo-400">{user?.name || "User"}</span>
             </h1>
+            <p className="text-lg text-slate-400">
+              Manage your posts and profile here.
+            </p>
           </div>
 
           <div className="rounded-3xl border border-slate-800 bg-slate-900/50 p-6 shadow-2xl shadow-slate-900/40 sm:p-8">
@@ -230,7 +233,6 @@ const Profile = () => {
           )}
         </div>
       </section>
-      <Footer />
     </>
   );
 };

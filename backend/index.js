@@ -6,6 +6,7 @@ import { connectDB } from "./config/db.js";
 import connectCloudinary from "./config/cloudinary.js";
 import authRoutes from "./routes/authRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
+import contactFormRoute from "./routes/contactFormRoute.js";
 
 dotenv.config();
 const app = express();
@@ -30,7 +31,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/post", postRoutes);
-
+app.use("/api/contact", contactFormRoute);
 app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
 });

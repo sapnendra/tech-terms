@@ -264,7 +264,6 @@ const Home = () => {
 
         {renderedPosts}
       </section>
-      <Footer />
     </>
   );
 };

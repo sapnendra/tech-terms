@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 const links = [
   { label: "Home", to: "/" },
   { label: "About", to: "/about" },
+  { label: "Guidelines", to: "/guidelines" },
   { label: "Contact", to: "/contact" },
 ];
 
