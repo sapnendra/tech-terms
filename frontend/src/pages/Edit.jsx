@@ -196,7 +196,7 @@ const Edit = () => {
               <button
                 type="submit"
                 disabled={loading || formData.content.length < 200}
-                className="rounded-2xl bg-indigo-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-300 disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-2xl bg-indigo-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-300 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loading ? "Updating..." : "Update Post"}
               </button>
