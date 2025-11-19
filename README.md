@@ -1,4 +1,4 @@
-# Tech Terms - Techlexicon
+# Tech Terms
 
 A full-stack web application that serves as a community-driven platform for defining and sharing technology terms. Users can create, read, update, and interact with technology term definitions while building a comprehensive knowledge base.
 

@@ -133,7 +133,7 @@ export const logoutUser = async (req, res) => {
   }
 };
 
-// Pet profile
+// Get profile
 export const getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
@@ -152,8 +152,9 @@ export const isAuth = async (req, res) => {
   try {
     const { id } = req.user;
     const user = await User.findById(id).select("-password");
-    res.json({ success: true, user });
+    res.json({ success: true, message: "User is authenticated", user });
   } catch (error) {
+    console.log(error.message);
     return res.json({ message: "Internal server error", success: false });
   }
 };
