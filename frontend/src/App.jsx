@@ -13,6 +13,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Profile from "./pages/Profile";
 import Footer from "./components/Footer";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/edit/:id" element={<Edit />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/auth-system" element={<AuthSystem />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Routes>
       </main>
       <Footer />

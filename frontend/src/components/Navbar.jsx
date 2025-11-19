@@ -56,11 +56,10 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/80 backdrop-blur supports-backdrop-blur:bg-slate-950/70">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-4 sm:px-6 lg:px-8">
-        <Link
-          to="/"
-          className="text-3xl font-black uppercase tracking-tight text-white"
-        >
-          <span className="text-indigo-500">Tech-Terms</span> <span className="text-slate-600 text-lg">by Sapnendra</span>
+        <Link to="/" className="text-3xl font-black tracking-tight text-white">
+          <span className="text-indigo-500 uppercase">Tech-Terms</span>{" "}
+          <span className="text-slate-500 text-lg lowecase">by </span>
+          <span className="text-red-400 text-lg uppercase">Sapnendra</span>
         </Link>
 
         <button
@@ -71,7 +70,9 @@ export default function Navbar() {
           onClick={() => setOpen((prev) => !prev)}
         >
           <svg
-            className={`h-6 w-6 transition ${open ? "opacity-0" : "opacity-100"}`}
+            className={`h-6 w-6 transition ${
+              open ? "opacity-0" : "opacity-100"
+            }`}
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -84,7 +85,9 @@ export default function Navbar() {
             <line x1="3" y1="18" x2="21" y2="18" />
           </svg>
           <svg
-            className={`absolute h-6 w-6 transition ${open ? "opacity-100" : "opacity-0"}`}
+            className={`absolute h-6 w-6 transition ${
+              open ? "opacity-100" : "opacity-0"
+            }`}
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -177,7 +180,9 @@ export default function Navbar() {
       </div>
 
       <div
-        className={`lg:hidden ${open ? "block" : "hidden"} border-t border-slate-800 bg-slate-950/95`}
+        className={`lg:hidden ${
+          open ? "block" : "hidden"
+        } border-t border-slate-800 bg-slate-950/95`}
       >
         <nav className="space-y-2 px-4 py-6 text-xl font-semibold text-slate-100 sm:px-6">
           {links.map((link) => (
