@@ -145,7 +145,7 @@ export const deletePost = async (req, res) => {
     // Check if user is admin or the post owner
     const userId = req.user.id.toString();
     const postUserId = post.user.toString();
-    const isAdmin = req.user.isAdmin;
+    const isAdmin = req.user.role === "admin";
     
     if (!isAdmin && userId !== postUserId) {
       return res.status(403).json({ 
@@ -155,10 +155,14 @@ export const deletePost = async (req, res) => {
     }
     
     await Post.findByIdAndDelete(id);
-    res.status(200).json({ success: true, message: "Post deleted" });
+    return res
+      .status(200)
+      .json({ success: true, message: "Post deleted successfully" });
   } catch (error) {
     console.log(error);
-    return res.json({ message: "Internal server error", success: false });
+    return res
+      .status(500)
+      .json({ message: "Internal server error", success: false });
   }
 };
 
@@ -196,24 +200,4 @@ export const likeUnlike = async (req, res) => {
     console.log(error.message);
     return res.status(500).json({ message: "Internal server error", success: false });
   }
-
-  //   const referer = req.get("referer") || "";
-
-  //   let redirectTo = "/";
-  //   try {
-  //     const refererUrl = new URL(referer);
-  //     const pathname = refererUrl.pathname || "/";
-  //     if (
-  //       pathname === "/" ||
-  //       pathname === "/profile" ||
-  //       pathname === "/profile/" ||
-  //       pathname.startsWith("/profile")
-  //     ) {
-  //       redirectTo = pathname;
-  //     }
-  //   } catch (e) {
-  //     redirectTo = "/";
-  //   }
-
-  //   res.redirect(redirectTo);
 };

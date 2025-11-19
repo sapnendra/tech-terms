@@ -13,23 +13,21 @@ export const protect = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
+    return res.status(401).json({ message: "Invalid token", success: false });
   }
 };
 
 // Admin only actions
 export const adminOnly = (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) {
+  if (!req.user) {
     return res.status(401).json({ message: "Not Authorized", success: false });
   }
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.admin = decoded;
-    if (req.admin.email === process.env.ADMIN_EMAIL) {
-      next();
-    }
-  } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
+
+  if (req.user.role !== "admin") {
+    return res
+      .status(403)
+      .json({ message: "Admins only access", success: false });
   }
+
+  next();
 };
