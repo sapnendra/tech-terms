@@ -5,7 +5,6 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Guidelines from "./pages/Guidelines";
 import Edit from "./pages/Edit";
-import AuthSystem from "./pages/AuthSystem";
 import Navbar from "./components/Navbar";
 import CreatePost from "./components/CreatePost";
 import { Route, Routes } from "react-router-dom";
@@ -30,7 +29,6 @@ const App = () => {
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/edit/:id" element={<Edit />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/auth-system" element={<AuthSystem />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Routes>
       </main>

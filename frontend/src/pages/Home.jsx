@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import apiInstance from "../apiInstance";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import Footer from "../components/Footer";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -167,12 +166,12 @@ const Home = () => {
 
                 <button
                   type="button"
-                  onClick={() => handleLikeToggle(term._id)}
-                  disabled={likingId === term._id}
-                  className="mt-6 inline-flex items-center justify-center gap-2 rounded-2xl border border-indigo-500/60 bg-indigo-500/10 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-500/20 disabled:cursor-not-allowed disabled:opacity-70"
+                  
+                  className="mt-6 inline-flex items-center justify-between gap-2 rounded-2xl border border-indigo-500/60 bg-indigo-500/10 px-6 py-4 text-lg font-semibold text-white transition hover:bg-indigo-500/20 disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  {isLiked ? "Unlike:" : "Like:"}
-                  <span className="text-lg font-medium text-red-500">
+                  <span onClick={() => handleLikeToggle(term._id)}
+                  disabled={likingId === term._id} className="rounded-full border border-slate-600 px-3 py-1 text-sm tracking- font-bold cursor-pointer">{isLiked ? "Unlike:" : "Like Me:"}</span>
+                  <span className="rounded-full border border-slate-600 px-3 py-1 text-sm tracking- font-bold text-red-500">
                     {likesCount} {likesCount === 1 ? "like" : "likes"}
                   </span>
                 </button>
