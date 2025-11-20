@@ -127,7 +127,9 @@ const Home = () => {
             const isLiked = currentUserId
               ? term.likes?.some((like) => {
                   // Handle both ObjectId objects and strings
-                  const likeId = like?._id ? like._id.toString() : like?.toString();
+                  const likeId = like?._id
+                    ? like._id.toString()
+                    : like?.toString();
                   return likeId === currentUserId.toString();
                 })
               : false;
@@ -166,11 +168,15 @@ const Home = () => {
 
                 <button
                   type="button"
-                  
                   className="mt-6 inline-flex items-center justify-between gap-2 rounded-2xl border border-indigo-500/60 bg-indigo-500/10 px-6 py-4 text-lg font-semibold text-white transition hover:bg-indigo-500/20 disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  <span onClick={() => handleLikeToggle(term._id)}
-                  disabled={likingId === term._id} className="rounded-full border border-slate-600 px-3 py-1 text-sm tracking- font-bold cursor-pointer">{isLiked ? "Unlike:" : "Like Me:"}</span>
+                  <span
+                    onClick={() => handleLikeToggle(term._id)}
+                    disabled={likingId === term._id}
+                    className="rounded-full border border-slate-600 px-3 py-1 text-sm tracking- font-bold cursor-pointer"
+                  >
+                    {isLiked ? "Unlike:" : "Like Me:"}
+                  </span>
                   <span className="rounded-full border border-slate-600 px-3 py-1 text-sm tracking- font-bold text-red-500">
                     {likesCount} {likesCount === 1 ? "like" : "likes"}
                   </span>
