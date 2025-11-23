@@ -5,7 +5,7 @@ echo "Pushing in git repository..."
 git add .
 
 # Commit all staged files
-git commit -m "add admin dashboard"
+git commit -m "add changes to local repository"
 
 # Push from last commit
 git push -u origin main

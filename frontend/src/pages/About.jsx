@@ -6,6 +6,14 @@ import Footer from "../components/Footer";
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [])
+  
   const heroRef = useRef(null);
   const missionRef = useRef(null);
   const featuresRef = useRef(null);
