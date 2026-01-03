@@ -65,7 +65,7 @@ export default function Navbar() {
 
         <button
           type="button"
-          className="inline-flex items-center justify-center rounded-xl border border-slate-700 p-2 text-slate-200 transition hover:border-indigo-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 lg:hidden"
+          className="inline-flex items-center justify-center rounded-xl border border-slate-700 p-2 text-slate-200 transition hover:border-indigo-500 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 lg:hidden"
           aria-label="Toggle navigation menu"
           aria-expanded={open}
           onClick={() => setOpen((prev) => !prev)}
@@ -106,7 +106,7 @@ export default function Navbar() {
             <Link
               key={link.to}
               to={link.to}
-              className="transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-500"
+              className="transition hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-500"
             >
               {link.label}
             </Link>
@@ -120,7 +120,7 @@ export default function Navbar() {
                 aria-label="Profile menu"
                 aria-expanded={profileOpen}
               >
-                <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-indigo-500/50 bg-gradient-to-br from-indigo-400 to-indigo-600">
+                <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-indigo-500/50 bg-linear-to-br from-indigo-400 to-indigo-600">
                   <div className="flex h-full w-full items-center justify-center text-lg font-bold text-white">
                     {user?.name?.charAt(0).toUpperCase() || "U"}
                   </div>
@@ -199,7 +199,7 @@ export default function Navbar() {
           {isAuthenticated ? (
             <div className="mt-4 space-y-2 border-t border-slate-800 pt-4">
               <div className="flex items-center gap-3 rounded-2xl border border-slate-700 bg-slate-900/50 px-4 py-3">
-                <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-indigo-500/50 bg-gradient-to-br from-indigo-400 to-indigo-600">
+                <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-indigo-500/50 bg-linear-to-br from-indigo-400 to-indigo-600">
                   <div className="flex h-full w-full items-center justify-center text-lg font-bold text-white">
                     {user?.name?.charAt(0).toUpperCase() || "U"}
                   </div>
