@@ -25,19 +25,15 @@ const allowedOrigins = [
   "http://localhost:5174",
   "https://techterms.netlify.app/",
 ];
-app.use(cors({
-  origin: function (origin, callback) {
-    // allow requests with no origin (like mobile apps, Postman)
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: (origin, cb) => {
+      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+      return cb(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
 
 app.use(cookieParser());
 
