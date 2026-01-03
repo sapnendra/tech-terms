@@ -19,11 +19,28 @@ connectCloudinary();
 
 // middlewares
 app.use(express.json());
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://technologyterms.netlify.app",
+];
 app.use(cors({
-  origin:"http://localhost:5173",
-  credentials:true,
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps, Postman)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
 }));
+
 app.use(cookieParser());
+
 
 // Routes
 app.get("/", (req, res) => {
