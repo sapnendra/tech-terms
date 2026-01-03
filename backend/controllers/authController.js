@@ -75,6 +75,7 @@ export const loginUser = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    console.log("Checking LoginUser error");
     return res.json({ message: "Internal server error", success: false });
   }
 };
@@ -99,9 +100,17 @@ export const adminLogin = async (req, res) => {
 
     const user = await User.findOne({ email });
 
+    // Check if admin user exists in database
+    if (!user) {
+      return res.json({ 
+        message: "Admin user not found in database. Please create admin user first.", 
+        success: false 
+      });
+    }
+
     generateToken(res, {
-      id: user._id,
-      role: user.isAdmin ? "admin" : "user",
+      id: user?._id,
+      role: user?.isAdmin ? "admin" : "user",
     });
 
     return res.json({
@@ -113,6 +122,7 @@ export const adminLogin = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    console.log("Checking AdminLogin error");
     return res.json({ message: "Internal server error", success: false });
   }
 };
@@ -129,6 +139,7 @@ export const logoutUser = async (req, res) => {
     return res.json({ message: "User logged out successfully", success: true });
   } catch (error) {
     console.log(error.message);
+    console.log("Checking Logout error");
     return res.json({ message: "Internal server error", success: false });
   }
 };
@@ -144,6 +155,8 @@ export const getProfile = async (req, res) => {
     }
     res.json(user);
   } catch (error) {
+    console.log(error.message);
+    console.log("Checking GetProfile error");
     return res.json({ message: "Internal server error", success: false });
   }
 };
@@ -155,6 +168,8 @@ export const isAuth = async (req, res) => {
     res.json({ success: true, message: "User is authenticated", user });
   } catch (error) {
     console.log(error.message);
+    console.log("Checking IsAuth error");
+    
     return res.json({ message: "Internal server error", success: false });
   }
 };
