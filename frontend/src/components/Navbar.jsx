@@ -20,7 +20,7 @@ export default function Navbar() {
   const checkAuth = async () => {
     try {
       const response = await apiInstance.get("/auth/is-auth");
-      if (response.data.success) {
+      if (response.data.success && response.data.authenticated) {
         setIsAuthenticated(true);
         setUser(response.data.user);
       } else {
@@ -28,6 +28,7 @@ export default function Navbar() {
         setUser(null);
       }
     } catch (error) {
+      // Silently handle auth check failures - user is simply not logged in
       setIsAuthenticated(false);
       setUser(null);
     }

@@ -165,11 +165,36 @@ export const isAuth = async (req, res) => {
   try {
     const { id } = req.user;
     const user = await User.findById(id).select("-password");
-    res.json({ success: true, message: "User is authenticated", user });
+    if (!user) {
+      return res.json({ success: false, message: "User not found", authenticated: false });
+    }
+    res.json({ success: true, message: "User is authenticated", user, authenticated: true });
   } catch (error) {
     console.log(error.message);
     console.log("Checking IsAuth error");
+    return res.json({ message: "Internal server error", success: false, authenticated: false });
+  }
+};
+
+// Check auth without protect middleware - graceful handling
+export const checkAuth = async (req, res) => {
+  try {
+    const token = req.cookies.token;
     
-    return res.json({ message: "Internal server error", success: false });
+    if (!token) {
+      return res.json({ success: false, authenticated: false });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id).select("-password");
+    
+    if (!user) {
+      return res.json({ success: false, authenticated: false });
+    }
+
+    res.json({ success: true, authenticated: true, user });
+  } catch (error) {
+    // Token invalid or expired - not an error, just not authenticated
+    return res.json({ success: false, authenticated: false });
   }
 };
